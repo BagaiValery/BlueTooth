@@ -1,0 +1,114 @@
+
+from random import randint
+from tkinter import *
+from tkinter import font as tkFont
+from PIL import ImageTk, Image
+
+from phone_coordinates import phone_coordinates
+
+def path_tracking():
+    0
+
+def b1():
+    global x
+    global y
+    global img_ph
+    x = randint(0, 1280)
+    y = randint(0, 1024)
+    img_ph1 = canvas.create_image(x, y, image=img_phone)
+    canvas.delete(img_ph)
+    img_ph = img_ph1
+    checkbutton_coord()
+
+
+
+
+def checkbutton_coord():
+    global Xcords
+    global Ycords
+    if enabled1.get() == 0:
+        Xcords.place_forget()
+        Ycords.place_forget()
+    else:
+        Xcords1 = Label(canvas, text="X:" + str(x), font=helv36, bg="#dbdbdb")
+        Ycords1 = Label(canvas, text="Y:" + str(y), font=helv36, bg="#dbdbdb")
+        Xcords1.place(relx=0.02, rely=0.93)
+        Ycords1.place(relx=0.2, rely=0.93)
+        Label.destroy(Xcords)
+        Label.destroy(Ycords)
+        Xcords = Xcords1
+        Ycords = Ycords1
+
+
+
+def picload(path):
+    pilImage = Image.open(path)
+    return ImageTk.PhotoImage(pilImage)
+
+def createwindow():
+    root = Tk()
+    root['bg'] = '#830367'
+    root.title('Bluetooth location')
+    root.geometry('1920x1080')
+    root.resizable(width=False, height=False)
+    return root
+
+
+
+
+
+coords = phone_coordinates(600, 400, 316, 300, 900, 721 , 800, 900, 412)
+x =coords[0]
+y =coords[1]
+window = createwindow()
+
+
+
+
+
+helv36 = tkFont.Font(size=24, weight=tkFont.BOLD)
+enabled1 = IntVar()
+enabled2 = IntVar()
+
+img_bluetooth = picload("bluetooth.png")
+img_phone = picload("cellphone.png")
+img_laptop = picload("laptop.png")
+
+
+canvas = Canvas(window, width=1280, height=1024, bg = "#dbdbdb")
+img_ph=canvas.create_image(x, y, image=img_phone)
+
+
+
+canvas.create_image(600,400,image=img_laptop)
+canvas.create_image(300,900,image=img_laptop)
+canvas.create_image(800,900,image=img_laptop)
+
+
+bl_image = Label(window, image = img_bluetooth, bg="#830367")
+Xcords = Label(canvas, text="X:", font=helv36, bg="#dbdbdb")
+Ycords = Label(canvas, text="Y:", font=helv36, bg="#dbdbdb")
+
+check1 = Checkbutton(window, text = "показать координаты", bg="#acacac", font=helv36, variable=enabled1, command=checkbutton_coord)
+check2 = Checkbutton(window, text = "показать путь", bg="#acacac", font=helv36)
+button1 = Button(window, text = "обновить положение", bg="#acacac", font=helv36,  command=b1)
+
+
+
+
+
+bl_image.place(relx=0.05, rely=0.7)
+check1.place(relx=0.01, rely=0.05)
+check2.place(relx=0.01, rely=0.15)
+button1.place(relx=0.01, rely=0.25)
+canvas.place(x=600, y=12)
+
+
+
+
+
+
+
+window.mainloop()
+
+
